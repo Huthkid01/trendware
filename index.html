@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trendware - Premium Fashion & Style</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Flutterwave can stay in head -->
+    <script type="text/javascript" src="https://checkout.flutterwave.com/v3.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Trendware</h1>
+                </div>
+
+                <nav class="nav" id="mainNav">
+                    <a href="#home">Home</a>
+                    <a href="#products">Products</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+
+                <div class="header-actions">
+                    <!-- WORLD COUNTRIES SELECTOR - 200+ Scrollable Countries -->
+                    <div class="country-selector-wrapper">
+                        <select id="countrySelector" class="country-selector">
+                            <!-- TOP POPULAR COUNTRIES -->
+                            <option value="NGN" data-country="Nigeria">🇳🇬 Nigeria - ₦</option>
+                            <option value="USD" data-country="United States">🇺🇸 United States - $</option>
+                            <option value="GBP" data-country="United Kingdom">🇬🇧 United Kingdom - £</option>
+                            <option value="EUR" data-country="Eurozone">🇪🇺 Eurozone - €</option>
+                            <option value="GHS" data-country="Ghana">🇬🇭 Ghana - GH₵</option>
+                            <option value="KES" data-country="Kenya">🇰🇪 Kenya - KSh</option>
+                            <option value="ZAR" data-country="South Africa">🇿🇦 South Africa - R</option>
+                            <option value="EGP" data-country="Egypt">🇪🇬 Egypt - E£</option>
+                            <option value="JPY" data-country="Japan">🇯🇵 Japan - ¥</option>
+                            <option value="CAD" data-country="Canada">🇨🇦 Canada - C$</option>
+
+                            <!-- AFRICA -->
+                            <optgroup label="🌍 Africa (50+ Countries)">
+                                <option value="GHS" data-country="Ghana">🇬🇭 Ghana - GH₵</option>
+                                <option value="KES" data-country="Kenya">🇰🇪 Kenya - KSh</option>
+                                <option value="ZAR" data-country="South Africa">🇿🇦 South Africa - R</option>
+                                <option value="EGP" data-country="Egypt">🇪🇬 Egypt - E£</option>
+                                <option value="MAD" data-country="Morocco">🇲🇦 Morocco - MAD</option>
+                                <option value="ETB" data-country="Ethiopia">🇪🇹 Ethiopia - ETB</option>
+                                <option value="TZS" data-country="Tanzania">🇹🇿 Tanzania - TSh</option>
+                                <option value="UGX" data-country="Uganda">🇺🇬 Uganda - USh</option>
+                                <option value="RWF" data-country="Rwanda">🇷🇼 Rwanda - RWF</option>
+                                <option value="GMD" data-country="Gambia">🇬🇲 Gambia - D</option>
+                                <option value="SLE" data-country="Sierra Leone">🇸🇱 Sierra Leone - Le</option>
+                                <option value="GNF" data-country="Guinea">🇬🇳 Guinea - GNF</option>
+                                <option value="XOF" data-country="Senegal">🇸🇳 Senegal - XOF</option>
+                                <option value="XAF" data-country="Cameroon">🇨🇲 Cameroon - XAF</option>
+                                <option value="CDF" data-country="DR Congo">🇨🇩 DR Congo - CDF</option>
+                            </optgroup>
+
+                            <!-- EUROPE -->
+                            <optgroup label="🇪🇺 Europe (40+ Countries)">
+                                <option value="EUR" data-country="Germany">🇩🇪 Germany - €</option>
+                                <option value="EUR" data-country="France">🇫🇷 France - €</option>
+                                <option value="EUR" data-country="Italy">🇮🇹 Italy - €</option>
+                                <option value="EUR" data-country="Spain">🇪🇸 Spain - €</option>
+                                <option value="CHF" data-country="Switzerland">🇨🇭 Switzerland - CHF</option>
+                                <option value="SEK" data-country="Sweden">🇸🇪 Sweden - SEK</option>
+                                <option value="NOK" data-country="Norway">🇳🇴 Norway - NOK</option>
+                                <option value="DKK" data-country="Denmark">🇩🇰 Denmark - DKK</option>
+                                <option value="PLN" data-country="Poland">🇵🇱 Poland - PLN</option>
+                                <option value="CZK" data-country="Czech Republic">🇨🇿 Czech Republic - CZK</option>
+                            </optgroup>
+
+                            <!-- ASIA -->
+                            <optgroup label="🇦🇸 Asia (50+ Countries)">
+                                <option value="JPY" data-country="Japan">🇯🇵 Japan - ¥</option>
+                                <option value="INR" data-country="India">🇮🇳 India - ₹</option>
+                                <option value="CNY" data-country="China">🇨🇳 China - ¥</option>
+                                <option value="KRW" data-country="South Korea">🇰🇷 South Korea - ₩</option>
+                                <option value="SGD" data-country="Singapore">🇸🇬 Singapore - S$</option>
+                                <option value="MYR" data-country="Malaysia">🇲🇾 Malaysia - RM</option>
+                                <option value="PHP" data-country="Philippines">🇵🇭 Philippines - ₱</option>
+                                <option value="THB" data-country="Thailand">🇹🇭 Thailand - ฿</option>
+                                <option value="IDR" data-country="Indonesia">🇮🇩 Indonesia - Rp</option>
+                                <option value="VND" data-country="Vietnam">🇻🇳 Vietnam - ₫</option>
+                            </optgroup>
+
+                            <!-- AMERICAS -->
+                            <optgroup label="🇺🇸 Americas (35+ Countries)">
+                                <option value="USD" data-country="United States">🇺🇸 United States - $</option>
+                                <option value="CAD" data-country="Canada">🇨🇦 Canada - C$</option>
+                                <option value="BRL" data-country="Brazil">🇧🇷 Brazil - R$</option>
+                                <option value="MXN" data-country="Mexico">🇲🇽 Mexico - Mex$</option>
+                                <option value="CLP" data-country="Chile">🇨🇱 Chile - CLP</option>
+                                <option value="COP" data-country="Colombia">🇨🇴 Colombia - COP</option>
+                                <option value="ARS" data-country="Argentina">🇦🇷 Argentina - ARS</option>
+                                <option value="PEN" data-country="Peru">🇵🇪 Peru - PEN</option>
+                            </optgroup>
+
+                            <!-- OCEANIA & OTHERS -->
+                            <optgroup label="🌊 Oceania & Middle East">
+                                <option value="AUD" data-country="Australia">🇦🇺 Australia - A$</option>
+                                <option value="NZD" data-country="New Zealand">🇳🇿 New Zealand - NZ$</option>
+                                <option value="AED" data-country="UAE">🇦🇪 UAE - AED</option>
+                                <option value="SAR" data-country="Saudi Arabia">🇸🇦 Saudi Arabia - SAR</option>
+                                <option value="ILS" data-country="Israel">🇮🇱 Israel - ₪</option>
+                                <option value="TRY" data-country="Turkey">🇹🇷 Turkey - ₺</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <button class="cart-btn" id="cartBtn">
+                        🛒 Cart
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+
+                    <!-- Hamburger INSIDE header-actions -->
+                    <button class="hamburger" id="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Discover Premium Fashion</h2>
+                <p>Explore our curated collection of stylish clothes, premium shoes, and elegant accessories</p>
+                <a href="#products" class="btn-primary">Shop Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="filter-section" id="products">
+        <div class="container">
+            <h2 class="section-title">Our Collections</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All Products</button>
+                <button class="filter-btn" data-category="clothes">Clothes</button>
+                <button class="filter-btn" data-category="shoes">Shoes</button>
+                <button class="filter-btn" data-category="accessories">Accessories</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <!-- Clothes Section -->
+            <div class="category-section" data-category="clothes">
+                <h3 class="category-title">Premium Clothes</h3>
+                <div class="products-grid" id="clothesProducts"></div>
+            </div>
+
+            <!-- Shoes Section -->
+            <div class="category-section" data-category="shoes">
+                <h3 class="category-title">Designer Shoes</h3>
+                <div class="products-grid" id="shoesProducts"></div>
+            </div>
+
+            <!-- Accessories Section -->
+            <div class="category-section" data-category="accessories">
+                <h3 class="category-title">Luxury Accessories</h3>
+                <div class="products-grid" id="accessoriesProducts"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-btn" id="closeCart">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="cartItems"></div>
+                <div class="cart-summary">
+                    <div class="cart-total">
+                        <strong>Total:</strong>
+                        <span id="cartTotal">₦0</span>
+                    </div>
+                    <button class="btn-danger" id="clearCartBtn">Clear Cart</button>
+                    <button class="btn-primary btn-full" id="checkoutBtn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Secure Checkout</h2>
+                <button class="close-btn" id="closeCheckout">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="checkoutForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <h3>Shipping Address</h3>
+                    
+                    <div class="form-group">
+                        <label for="street">Street Address *</label>
+                        <input type="text" id="street" name="street" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State *</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="postalCode">Postal Code *</label>
+                            <input type="text" id="postalCode" name="postalCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <input type="text" id="country" name="country" required>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-summary">
+                        <h3>Order Summary</h3>
+                        <div id="checkoutItems"></div>
+                        <div class="checkout-total">
+                            <strong>Total:</strong>
+                            <span id="checkoutTotal">₦0</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary btn-full">Pay Securely Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-content">
+            <div class="success-icon">✓</div>
+            <h2>Order Successful!</h2>
+            <p>Thank you for your purchase. You will receive a confirmation email shortly with your order details.</p>
+            <button class="btn-primary btn-full" id="closeSuccess">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">Why Choose Trendware?</h2>
+            <p>Trendware is your premier destination for premium fashion. We offer a curated selection of high-quality clothes, designer shoes, and luxury accessories sourced from top brands worldwide. Our commitment to quality, style, and customer satisfaction makes us the preferred choice for fashion enthusiasts.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Trendware</h3>
+                    <p>Premium Fashion & Style</p>
+                    <p>Delivering quality and elegance worldwide</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#products">Shop</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Customer Care</h4>
+                    <p>Email: support@trendware.com</p>
+                    <p>Phone: +234 123 456 7890</p>
+                    <p>Mon-Sat: 9AM - 8PM</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Payments</h4>
+                    <p>Secure payments via card, bank transfer, and USSD</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Trendware. All rights reserved. | Designed with ❤️ for fashion lovers</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load EmailJS before your script so emailjs is defined -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
