@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trendware Admin Login</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-login-page">
+  <div class="login-card">
+    <h1>Trendware Admin</h1>
+    <p>Sign in to manage your site.</p>
+
+    <input id="loginEmail" type="email" placeholder="Admin email">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button id="loginSubmit">Login</button>
+    <p id="loginMessage"></p>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://yxpftrlfkqrvoolzxqsj.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4cGZ0cmxma3Fydm9vbHp4cXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MDUwMjAsImV4cCI6MjA4MTA4MTAyMH0.0I87bU6pnpwY7wYZLv0ZEF-MOOeUZkjTKrfjgFIheKY';
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const emailInput = document.getElementById('loginEmail');
+    const passInput = document.getElementById('loginPassword');
+    const btn = document.getElementById('loginSubmit');
+    const msg = document.getElementById('loginMessage');
+
+    btn.addEventListener('click', async () => {
+      msg.textContent = 'Signing in...';
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email: emailInput.value.trim(),
+        password: passInput.value
+      }); // [web:76]
+
+      if (error) {
+        msg.textContent = 'Login failed: ' + error.message;
+        return;
+      }
+
+      // redirect to dashboard
+      window.location.href = 'admin.html';
+    });
+  </script>
+</body>
+</html>

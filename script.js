@@ -1,48 +1,101 @@
-// Initialize EmailJS with your public key
+// 1) Supabase client (top of file)
+const SUPABASE_URL = 'https://yxpftrlfkqrvoolzxqsj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4cGZ0cmxma3Fydm9vbHp4cXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MDUwMjAsImV4cCI6MjA4MTA4MTAyMH0.0I87bU6pnpwY7wYZLv0ZEF-MOOeUZkjTKrfjgFIheKY';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// 2) Initialize EmailJS with your public key
 if (typeof emailjs !== 'undefined') {
   emailjs.init('rgDGB9lGjcUMCZ_RC');
 }
 
-// Product Data with Sizes (UNCHANGED)
-const products = [
-  // CLOTHES
-  { id: 1, name: "Classic White T-Shirt", priceNGN: 8000, priceUSD: 12, priceGBP: 10, category: "clothes", imageUrl:"images/Classic T shirt.png", sizes: ["S", "M", "L", "XL"] },
-  { id: 2, name: "Black Leather Jacket", priceNGN: 45000, priceUSD: 65, priceGBP: 55, category: "clothes", imageUrl: "images/Black leather jacket.png", sizes: ["M", "L", "XL"] },
-  { id: 3, name: "Blue Denim Jeans", priceNGN: 18000, priceUSD: 28, priceGBP: 23, category: "clothes", imageUrl: "images/Blue denim jeans.png", sizes: ["28", "30", "32", "34"] },
-  { id: 4, name: "Gray Hoodie", priceNGN: 15000, priceUSD: 22, priceGBP: 18, category: "clothes", imageUrl: "images/Gray hoodie.png", sizes: ["S", "M", "L", "XL"] },
-  { id: 5, name: "Summer Dress", priceNGN: 22000, priceUSD: 32, priceGBP: 27, category: "clothes", imageUrl: "images/Summer dress.png", sizes: ["S", "M", "L"] },
-  { id: 6, name: "Polo Shirt", priceNGN: 12000, priceUSD: 18, priceGBP: 15, category: "clothes", imageUrl: "images/Polo shirt.png", sizes: ["S", "M", "L", "XL"] },
-  { id: 7, name: "Winter Coat", priceNGN: 55000, priceUSD: 80, priceGBP: 68, category: "clothes", imageUrl: "images/Winter coat.png", sizes: ["M", "L", "XL"] },
-  { id: 8, name: "Cargo Pants", priceNGN: 16000, priceUSD: 24, priceGBP: 20, category: "clothes", imageUrl: "images/Cargo pant.png", sizes: ["30", "32", "34", "36"] },
+// 3) Products will now come from Supabase (start empty)
+let products = [];
 
-  // SHOES
-  { id: 9, name: "White Sneakers", priceNGN: 25000, priceUSD: 38, priceGBP: 32, category: "shoes", imageUrl: "images/White sneakers.png", sizes: ["36", "38", "40", "42"] },
-  { id: 10, name: "Brown Leather Boots", priceNGN: 35000, priceUSD: 52, priceGBP: 44, category: "shoes", imageUrl: "images/Brown leather boot.png", sizes: ["38", "40", "42", "44"] },
-  { id: 11, name: "Black Formal Shoes", priceNGN: 28000, priceUSD: 42, priceGBP: 35, category: "shoes", imageUrl: "images/Black formal shoe.png", sizes: ["39", "41", "43", "45"] },
-  { id: 12, name: "Beach Sandals", priceNGN: 8000, priceUSD: 12, priceGBP: 10, category: "shoes", imageUrl: "images/Beach sandals.png", sizes: ["One Size"] },
-  { id: 13, name: "Running Shoes", priceNGN: 32000, priceUSD: 48, priceGBP: 40, category: "shoes", imageUrl: "images/Running shooe.png", sizes: ["37", "39", "41", "43"] },
-  { id: 14, name: "High Heels", priceNGN: 30000, priceUSD: 45, priceGBP: 38, category: "shoes", imageUrl: "images/High heels.png", sizes: ["36", "37", "38", "39"] },
-  { id: 15, name: "Canvas Shoes", priceNGN: 15000, priceUSD: 22, priceGBP: 18, category: "shoes", imageUrl: "images/Canvas shoe.png", sizes: ["36", "38", "40", "42"] },
-  { id: 16, name: "Slip-On Loafers", priceNGN: 22000, priceUSD: 33, priceGBP: 28, category: "shoes", imageUrl: "images/Slip-on loafers.png", sizes: ["39", "41", "43"] },
+// 4) Load site settings (hero, about, footer) from Supabase
+async function loadSiteSettings() {
+  const { data, error } = await supabaseClient
+    .from('site_settings')
+    .select('*')
+    .eq('id', 1)
+    .single(); // [web:157][web:160]
 
-  // ACCESSORIES
-  { id: 17, name: "Leather Backpack", priceNGN: 28000, priceUSD: 42, priceGBP: 35, category: "accessories", imageUrl: "images/Leather backpack.png", sizes: ["One Size"] },
-  { id: 18, name: "Baseball Cap", priceNGN: 6000, priceUSD: 9, priceGBP: 7, category: "accessories", imageUrl: "images/Baseball cap.png", sizes: ["One Size"] },
-  { id: 19, name: "Classic Watch", priceNGN: 45000, priceUSD: 68, priceGBP: 57, category: "accessories", imageUrl: "images/Classic watch.png", sizes: ["One Size"] },
-  { id: 20, name: "Gold Necklace", priceNGN: 55000, priceUSD: 82, priceGBP: 69, category: "accessories", imageUrl: "images/Gold necklace.png", sizes: ["One Size"] },
-  { id: 21, name: "Sunglasses", priceNGN: 12000, priceUSD: 18, priceGBP: 15, category: "accessories", imageUrl: "images/sunglasses.png", sizes: ["One Size"] },
-  { id: 22, name: "Leather Belt", priceNGN: 9000, priceUSD: 14, priceGBP: 11, category: "accessories", imageUrl: "images/Leather belt.png", sizes: ["32", "34", "36", "38"] },
-  { id: 23, name: "Tote Bag", priceNGN: 18000, priceUSD: 27, priceGBP: 23, category: "accessories", imageUrl: "images/Tote bag.png", sizes: ["One Size"] },
-  { id: 24, name: "Silver Bracelet", priceNGN: 25000, priceUSD: 38, priceGBP: 32, category: "accessories", imageUrl: "images/Sliver bracelet.png", sizes: ["One Size"] }
-];
+  if (error) {
+    console.error('Failed to load site settings:', error);
+    return;
+  }
+
+  // Hero section
+  const heroTitle = document.querySelector('.hero-content h2');
+  const heroSubtitle = document.querySelector('.hero-content p');
+  const heroButton = document.querySelector('.hero-content .btn-primary');
+
+  if (heroTitle) heroTitle.textContent = data.hero_title || '';
+  if (heroSubtitle) heroSubtitle.textContent = data.hero_subtitle || '';
+  if (heroButton) heroButton.textContent = data.hero_button_text || 'Shop Now';
+
+  // Collections title
+  const collectionsTitle = document.querySelector('.filter-section .section-title');
+  if (collectionsTitle) collectionsTitle.textContent = data.collections_title || 'Our Collections';
+
+  // About section
+  const aboutTitle = document.querySelector('.about-section .section-title');
+  const aboutP = document.querySelector('.about-section p');
+  if (aboutTitle) aboutTitle.textContent = data.about_title || 'Why Choose Trendware?';
+  if (aboutP) aboutP.textContent = data.about_paragraph || '';
+
+  // Footer: first column (Trendware)
+  const footerTagline = document.querySelector('.footer-section:nth-child(1) p:nth-child(2)');
+  const footerSubtagline = document.querySelector('.footer-section:nth-child(1) p:nth-child(3)');
+  if (footerTagline) footerTagline.textContent = data.footer_tagline || 'Premium Fashion & Style';
+  if (footerSubtagline) footerSubtagline.textContent = data.footer_subtagline || 'Delivering quality and elegance worldwide';
+
+  // Footer: customer care (third column)
+  const footerEmail = document.querySelector('.footer-section:nth-child(3) p:nth-child(2)');
+  const footerPhone = document.querySelector('.footer-section:nth-child(3) p:nth-child(3)');
+  const footerHours = document.querySelector('.footer-section:nth-child(3) p:nth-child(4)');
+  if (footerEmail) footerEmail.textContent = `Email: ${data.footer_contact_email || 'support@trendware.com'}`;
+  if (footerPhone) footerPhone.textContent = `Phone: ${data.footer_contact_phone || '+234 123 456 7890'}`;
+  if (footerHours) footerHours.textContent = data.footer_opening_hours || 'Mon-Sat: 9AM - 8PM';
+
+  // Footer bottom line
+  const footerBottom = document.querySelector('.footer-bottom p');
+  if (footerBottom) footerBottom.textContent = data.footer_bottom || '';
+}
+
+// 5) Load products from Supabase
+async function loadProductsFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error('Failed to load products:', error);
+    return;
+  }
+
+  products = data.map(row => ({
+    id: row.id,
+    name: row.name,
+    priceNGN: row.price_ngn,
+    priceUSD: row.price_usd || 0,
+    priceGBP: row.price_gbp || 0,
+    category: row.category,
+    imageUrl: row.image_url,
+    sizes: row.sizes ? row.sizes.split(',').map(s => s.trim()) : ['One Size']
+  }));
+
+  console.log('Products loaded from Supabase:', products.length);
+  renderProducts();
+}
 
 // ✅ 50+ Currency Symbols
 const currencySymbols = {
-  NGN: '₦', USD: '$', GBP: '£', EUR: '€', GHS: 'GH₵', KES: 'KSh', ZAR: 'R', 
-  EGP: 'E£', JPY: '¥', CAD: 'C$', AUD: 'A$', INR: '₹', BRL: 'R$', MXN: 'Mex$', 
-  CLP: 'CLP', COP: 'COP', ARS: 'ARS', NZD: 'NZ$', AED: 'AED', SAR: 'SAR', 
+  NGN: '₦', USD: '$', GBP: '£', EUR: '€', GHS: 'GH₵', KES: 'KSh', ZAR: 'R',
+  EGP: 'E£', JPY: '¥', CAD: 'C$', AUD: 'A$', INR: '₹', BRL: 'R$', MXN: 'Mex$',
+  CLP: 'CLP', COP: 'COP', ARS: 'ARS', NZD: 'NZ$', AED: 'AED', SAR: 'SAR',
   ILS: '₪', TRY: '₺', MAD: 'MAD', ETB: 'ETB', TZS: 'TSh', UGX: 'USh', RWF: 'RWF',
-  CHF: 'CHF', SEK: 'SEK', NOK: 'NOK', DKK: 'DKK', SGD: 'S$', MYR: 'RM', 
+  CHF: 'CHF', SEK: 'SEK', NOK: 'NOK', DKK: 'DKK', SGD: 'S$', MYR: 'RM',
   PHP: '₱', THB: '฿', IDR: 'Rp', VND: '₫', PLN: 'PLN', CZK: 'CZK'
 };
 
@@ -73,10 +126,11 @@ const mainNav = document.getElementById('mainNav');
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Initializing Trendware...');
-  console.log('Products loaded:', products.length);
   console.log('Current currency:', currentCurrency);
-  
-  renderProducts();
+
+  loadSiteSettings();
+  loadProductsFromSupabase();
+
   updateCartUI();
   setupEventListeners();
 });
@@ -103,6 +157,7 @@ function setupEventListeners() {
   }
 
   if (closeCart && cartModal) closeCart.addEventListener('click', () => cartModal.classList.remove('active'));
+
   if (clearCartBtn) {
     clearCartBtn.addEventListener('click', () => {
       if (confirm('Are you sure you want to clear your cart?')) {
@@ -208,7 +263,8 @@ function createProductCard(product) {
 
   card.innerHTML = `
     <div class="product-image">
-    <img src="${product.imageUrl}" alt="${product.name}"></div>
+      <img src="${product.imageUrl}" alt="${product.name}">
+    </div>
     <div class="product-info">
       <div class="product-name">${product.name}</div>
       <div class="product-category">${product.category.toUpperCase()}</div>
@@ -468,23 +524,22 @@ function handleCheckout(e) {
       payment_options: "card, banktransfer, ussd",
       customer: { email: formData.email, phone_number: formData.phone, name: formData.fullName },
       customizations: { title: "Trendware", description: "Purchase from Trendware", logo: "images/logo.png" },
-    callback: function(data) {
-      console.log('🔥 FLW back data:', data);
-      
-      if (data.status === "successful" || data.status === "completed") {
-        console.log('✅ Status is successful/completed, sending emails...');
-        sendDualEmailNotifications(formData, data.transaction_id);
-        cart = [];
-        saveCart();
-        updateCartUI();
-        if (checkoutModal) checkoutModal.classList.remove('active');
-        if (successModal) successModal.classList.add('active');
-        if (checkoutForm) checkoutForm.reset();
-      } else {
-        console.log('❌ Payment status not successful:', data.status);
-      }
-    },
-
+      callback: function(data) {
+        console.log('🔥 FLW back data:', data);
+        
+        if (data.status === "successful" || data.status === "completed") {
+          console.log('✅ Status is successful/completed, sending emails...');
+          sendDualEmailNotifications(formData, data.transaction_id);
+          cart = [];
+          saveCart();
+          updateCartUI();
+          if (checkoutModal) checkoutModal.classList.remove('active');
+          if (successModal) successModal.classList.add('active');
+          if (checkoutForm) checkoutForm.reset();
+        } else {
+          console.log('❌ Payment status not successful:', data.status);
+        }
+      },
       onclose: function() { console.log('Payment cancelled'); }
     });
   } else {
@@ -501,12 +556,11 @@ function handleCheckout(e) {
   }
 }
 
-// ✅ NEW: DUAL EMAIL NOTIFICATIONS (Customer + Owner)
+// DUAL EMAIL NOTIFICATIONS (Customer + Owner)
 function sendDualEmailNotifications(formData, paymentReference) {
   console.log('💥 sendDualEmailNotifications CALLED!', formData.email, paymentReference);
   const symbol = currencySymbols[currentCurrency] || '₦';
   let total = 0;
-  // ...rest of the function stays the same
 
   const orderItemsText = cart.map(item => {
     const price = item[`price${currentCurrency}`] || item.priceNGN || 0;
@@ -517,7 +571,6 @@ function sendDualEmailNotifications(formData, paymentReference) {
 
   const shippingAddress = `${formData.street}, ${formData.city}, ${formData.state}, ${formData.postalCode}, ${formData.country}`;
 
-  // ✅ CUSTOMER ORDER CONFIRMATION
   const customerParams = {
     buyer_name: formData.fullName,
     buyer_email: formData.email,
@@ -530,7 +583,6 @@ function sendDualEmailNotifications(formData, paymentReference) {
     timestamp: new Date().toLocaleString()
   };
 
-  // ✅ OWNER NEW ORDER ALERT
   const ownerParams = {
     buyer_name: formData.fullName,
     buyer_email: formData.email,
@@ -541,7 +593,7 @@ function sendDualEmailNotifications(formData, paymentReference) {
     currency: currentCurrency,
     payment_reference: paymentReference,
     timestamp: new Date().toLocaleString(),
-    store_owner: 'odusanyauthman28@gmail.com'  // ← CHANGE THIS TO YOUR EMAIL
+    store_owner: 'odusanyauthman28@gmail.com'
   };
 
   console.log('📧 Sending DUAL notifications...');
@@ -549,13 +601,11 @@ function sendDualEmailNotifications(formData, paymentReference) {
   console.log('Owner:', ownerParams.store_owner);
   console.log('Total:', customerParams.order_total);
 
-  // Send CUSTOMER email
   if (typeof emailjs !== 'undefined' && emailjs.send) {
     emailjs.send('service_zc17nys', 'template_ox6vxpb', customerParams)
       .then(() => console.log('✅ CUSTOMER: Order confirmation sent!'))
       .catch(err => console.error('❌ CUSTOMER email failed:', err));
 
-    // Send OWNER email
     emailjs.send('service_zc17nys', 'template_7xrl9pr', ownerParams)
       .then(() => console.log('✅ OWNER: New order alert sent! 🚨'))
       .catch(err => console.error('❌ OWNER email failed:', err));

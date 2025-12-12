@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trendware Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">Trendware Admin</div>
+
+      <nav class="admin-nav">
+        <button data-section="site" class="admin-nav-item active">
+          Site Content
+        </button>
+        <button data-section="products" class="admin-nav-item">
+          Products
+        </button>
+      </nav>
+
+      <button id="logoutBtn" class="admin-logout">Logout</button>
+    </aside>
+
+    <!-- Main area -->
+    <main class="admin-main">
+      <div style="width:100%; max-width:1100px;">
+        <!-- Top bar / header -->
+        <header class="admin-main-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <div>
+            <h1 style="margin:0; font-size:1.6rem; color:#111827;">Dashboard</h1>
+            <p style="margin:0.2rem 0 0; font-size:0.85rem; color:#6b7280;" id="sectionSubtitle">
+              Manage homepage content
+            </p>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span style="font-size:0.85rem; color:#6b7280;">Admin</span>
+          </div>
+        </header>
+
+        <!-- Site Content card -->
+        <section id="siteContentSection" class="admin-section">
+          <h2>Site Content</h2>
+
+          <!-- HERO -->
+          <h3>Hero Section</h3>
+          <input id="heroTitleInput" type="text" placeholder="Hero title">
+          <textarea id="heroSubtitleInput" placeholder="Hero subtitle"></textarea>
+          <input id="heroButtonTextInput" type="text" placeholder="Hero button text">
+
+          <!-- COLLECTIONS -->
+          <h3>Collections Section</h3>
+          <input id="collectionsTitleInput" type="text" placeholder="Collections title">
+
+          <!-- ABOUT -->
+          <h3>About Section</h3>
+          <input id="aboutTitleInput" type="text" placeholder="About title">
+          <textarea id="aboutTextInput" placeholder="About paragraph"></textarea>
+
+          <!-- FOOTER -->
+          <h3>Footer</h3>
+          <input id="footerTaglineInput" type="text" placeholder="Footer tagline">
+          <input id="footerSubtaglineInput" type="text" placeholder="Footer sub tagline">
+          <input id="footerEmailInput" type="email" placeholder="Support email">
+          <input id="footerPhoneInput" type="text" placeholder="Support phone">
+          <input id="footerHoursInput" type="text" placeholder="Opening hours">
+          <textarea id="footerBottomInput" placeholder="Footer bottom text"></textarea>
+
+          <button id="saveSettingsBtn">Save Site Text</button>
+          <p id="saveStatus"></p>
+        </section>
+
+        <!-- Products card -->
+        <section id="productsSection" class="admin-section" style="display:none; margin-top:1.5rem;">
+          <h2>Products</h2>
+          <div class="admin-products-card">
+            <div class="admin-table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Name / Category</th>
+                    <th>Prices</th>
+                    <th>Sizes</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody"></tbody>
+              </table>
+            </div>
+
+            <h3>Add / Edit Product</h3>
+            <form id="productForm">
+              <input type="hidden" id="productId">
+
+              <label>Product name</label>
+              <input id="productName" type="text" required>
+
+              <label>Category</label>
+              <input id="productCategory" type="text" placeholder="clothes / shoes / accessories" required>
+
+              <label>Price NGN</label>
+              <input id="productPriceNGN" type="number" required>
+
+              <label>Price USD</label>
+              <input id="productPriceUSD" type="number" required>
+
+              <label>Price GBP</label>
+              <input id="productPriceGBP" type="number" required>
+
+              <label>Product image</label>
+              <input id="productImageFile" type="file" accept="image/*">
+              <input id="productImageUrl" type="text" placeholder="Image URL (auto-filled after upload)" readonly>
+
+              <label>Sizes (comma separated)</label>
+              <input id="productSizes" type="text" placeholder="S,M,L or One Size" required>
+
+              <div style="margin-top:0.5rem;">
+                <button type="submit">Save Product</button>
+                <button type="button" id="cancelEditBtn">Cancel Edit</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
+
+  <script>
+    // Simple tab switching for sidebar buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      const navButtons = document.querySelectorAll('.admin-nav-item');
+      const siteSection = document.getElementById('siteContentSection');
+      const productsSection = document.getElementById('productsSection');
+      const subtitle = document.getElementById('sectionSubtitle');
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          navButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const target = btn.getAttribute('data-section');
+          if (target === 'site') {
+            siteSection.style.display = 'block';
+            productsSection.style.display = 'none';
+            subtitle.textContent = 'Manage homepage content';
+          } else if (target === 'products') {
+            siteSection.style.display = 'none';
+            productsSection.style.display = 'block';
+            subtitle.textContent = 'Manage products catalog';
+          }
+        });
+      });
+    });
+  </script>
+</body>
